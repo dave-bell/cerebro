@@ -1,0 +1,14 @@
+# APM install/build artifacts (this repo is a package, not a consumer project)
+apm_modules/
+apm.lock.yaml
+.claude/
+.codex/
+.opencode/
+.agents/
+
+# Runtime scratch space used by external-scout / context-manager operations
+.tmp/
+
+# OS/editor cruft
+.DS_Store
+*.swp

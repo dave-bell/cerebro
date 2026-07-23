@@ -1,0 +1,16 @@
+name: context-agents
+version: 0.1.0
+description: Universal context management agents, skills, and commands for AI coding assistants — discover project standards, generate MVI-compliant context, fetch live library docs, and manage context lifecycle across software development and enterprise solution configuration.
+author: Dave Bell
+# Which agent platforms to deploy to.
+# Resolution order: --target flag > this field > auto-detect from filesystem.
+# Accepted values: agent-skills, antigravity, claude, codex, copilot, cursor, gemini, kiro, opencode, windsurf
+targets:
+- claude
+- codex
+- opencode
+dependencies:
+  apm: []
+  mcp: []
+includes: auto
+scripts: {}

@@ -1,0 +1,75 @@
+---
+description: Interactive wizard that creates or updates project-intelligence (software dev) or customer-intelligence (solution config) context for this project, following the MVI and Project Intelligence standards.
+input:
+  - mode: "Which context to create: 'dev' (project-intelligence) or 'config' (customer-intelligence). If omitted, ask the user."
+  - action: "Optional: 'update' to revise existing context, 'global' to save to the global context root instead of local. Defaults to creating/updating local context."
+allowed-tools: [Read, Write, Edit, Grep, Glob, Agent]
+argument-hint: "[dev|config] [update|global]"
+---
+
+# Add Context
+
+Create or update this project's context so agents (and consultants, for labbit-configuration) automatically follow the right standards. Mode: ${input:mode}. Action: ${input:action}.
+
+## Stage 0: Resolve Context Root
+
+Follow the context-root-discovery protocol (installed alongside the `context-manager` skill at `references/context-root-discovery.md`; try `.claude/skills/context-manager/`, `.agents/skills/context-manager/`, or `.kiro/skills/context-manager/`).
+
+- If `${input:action}` is `global` → target root is the global candidate (e.g. `~/.claude/context/` or `~/.config/opencode/context/`).
+- Otherwise → target root is local (`{context_root}`), created if it doesn't exist.
+
+## Stage 1: Determine Mode
+
+If `${input:mode}` is not `dev` or `config`, ask:
+
+> Is this project intelligence for **building the product** (mode: dev), or **configuring the solution for a customer** (mode: config)? Both can coexist in the same project.
+
+- `dev` → target folder: `{context_root}/project-intelligence/`, templates from the `context-manager` skill's `assets/project-intelligence/`. Standard: `references/domains/software-development/project-intelligence.md`.
+- `config` → target folder: `{context_root}/customer-intelligence/`, templates from `assets/customer-intelligence/`. Standard: `references/domains/labbit-configuration/customer-intelligence.md`. Also point the user at `references/domains/labbit-configuration/standards/` (JSONC + BPMN patterns) for ongoing work.
+
+## Stage 2: Detect Existing Context
+
+Check whether the target folder already has content (e.g. `technical-domain.md` for dev, `customer-profile.md` for config).
+
+- **Exists and `${input:action}` is not `update`** → show a summary of current values (parse the tables from existing files) and ask: Review & update / Add new patterns / Replace all / Cancel.
+- **Exists and `${input:action}` is `update`** → go straight to review mode: show each section, ask Keep/Update/Remove.
+- **Doesn't exist** → proceed to Stage 3 fresh.
+
+## Stage 3: Gather Information
+
+### Mode: dev (6 questions, ~5 min)
+
+1. Tech stack? (framework, language, database, styling)
+2. API endpoint example? (paste real code, or 'skip')
+3. Component example? (paste real code, or 'skip')
+4. Naming conventions? (files, components, functions, database)
+5. Code standards? (one per line)
+6. Security requirements? (one per line)
+
+### Mode: config (5 questions, ~5 min)
+
+1. Customer name, industry, and scale?
+2. What are their primary goals for this implementation?
+3. Which modules are enabled, and are any config values overridden from defaults? (paste the JSONC snippet if available)
+4. Which BPMN processes are active, and are any customized from the standard template?
+5. Any constraints (compliance, legacy integration, on-prem-only, etc.)?
+
+Skip a question with 'skip' if not yet known — templates leave placeholders for later.
+
+## Stage 4: Generate
+
+Delegate to the `context-organizer` agent (`Agent(context-organizer)`) with the gathered answers, target folder, and mode. It will:
+1. Call `context-indexer` first to confirm nothing already covers this.
+2. Load the MVI/frontmatter/structure standards.
+3. Fill the appropriate template set (`assets/project-intelligence/*` or `assets/customer-intelligence/*`) with the gathered answers.
+4. Update `navigation.md` in the target folder.
+5. Validate against the MVI checklist (frontmatter present, <200 lines, codebase references included, version set).
+
+**Show the user a preview of each file before writing** — do not write silently.
+
+## Stage 5: Confirm & Next Steps
+
+Report what was created/updated, where it lives, and suggest:
+- Test it by asking an agent to do a small task in this domain and checking whether it follows the new patterns.
+- Run this prompt again with `action=update` whenever the tech stack, customer config, or processes change.
+- If mode was `dev` and the project also does customer implementations, consider running this prompt again with `mode=config`.

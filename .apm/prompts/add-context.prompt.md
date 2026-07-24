@@ -61,11 +61,20 @@ Skip a question with 'skip' if not yet known — templates leave placeholders fo
 Delegate to the `context-organizer` agent (`Agent(context-organizer)`) with the gathered answers, target folder, and mode. It will:
 1. Call `context-indexer` first to confirm nothing already covers this.
 2. Load the MVI/frontmatter/structure standards.
-3. Fill the appropriate template set (`assets/project-intelligence/*` or `assets/customer-intelligence/*`) with the gathered answers.
+3. **Instantiate the complete template set for the chosen mode.** Copy every file from the mode's `assets/` folder into the target folder, filling each with gathered answers (leave the template's placeholders where an answer was skipped). Create no fewer and no other files.
+
+   - **dev** → `{context_root}/project-intelligence/`, all 6 files from `assets/project-intelligence/`:
+     `navigation.md`, `business-domain.md`, `technical-domain.md`, `business-tech-bridge.md`, `decisions-log.md`, `living-notes.md`
+   - **config** → `{context_root}/customer-intelligence/`, all 6 files from `assets/customer-intelligence/`:
+     `navigation.md`, `customer-profile.md`, `configuration-domain.md`, `process-map.md`, `customization-log.md`, `living-notes.md`
+
+   Do NOT invent alternate folders (e.g. `patterns/`) or alternate frontmatter styles. The template set defines the exact files and format for both modes. Every file must start with the exact HTML-comment frontmatter: `<!-- Context: {category}/{function} | Priority: {level} | Version: X.Y | Updated: YYYY-MM-DD -->` — never YAML frontmatter (`---`).
 4. Update `navigation.md` in the target folder.
 5. Validate against the MVI checklist (frontmatter present, <200 lines, codebase references included, version set).
 
 **Show the user a preview of each file before writing** — do not write silently.
+
+**Before reporting done on a fresh scaffold**, list the target folder and confirm every template file for the chosen mode is present and each starts with the exact HTML-comment frontmatter. Fix any missing or divergent file before finishing — this applies equally to `dev` and `config`.
 
 ## Stage 5: Confirm & Next Steps
 

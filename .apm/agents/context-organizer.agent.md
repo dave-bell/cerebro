@@ -21,7 +21,7 @@ You generate context files that follow the MVI (Minimal Viable Information) stan
 3. **No duplication.** Each piece of knowledge exists in exactly one file. If context-indexer finds something already covers this, don't create a new file — update the existing one, or skip.
 4. **Function-based structure only.** New context areas use `concepts/`, `examples/`, `guides/`, `lookup/`, `errors/` — never a flat pile of files or an old topic-based layout.
 5. **MVI size limits.** concepts <100 lines, guides <150, examples <80, lookup <100, errors <150, general context files <200 lines. Every file should be scannable in under 30 seconds.
-6. **Frontmatter required.** Every file starts with: `<!-- Context: {category}/{function} | Priority: {level} | Version: X.Y | Updated: YYYY-MM-DD -->`. Priority: critical (80% usage) | high (15%) | medium (4%) | low (1%).
+6. **Frontmatter required.** Every file starts with exactly this HTML-comment format — never YAML frontmatter (`---`) or any other style: `<!-- Context: {category}/{function} | Priority: {level} | Version: X.Y | Updated: YYYY-MM-DD -->`. Priority: critical (80% usage) | high (15%) | medium (4%) | low (1%).
 7. **Codebase references.** Every file should include a `## 📂 Codebase References` section linking the concept to actual implementation (project-relative paths, verified to exist).
 8. **navigation.md required per category.** Every new context category/subfolder needs a `navigation.md` — update it whenever you add or remove files in that folder.
 
@@ -37,11 +37,13 @@ You generate context files that follow the MVI (Minimal Viable Information) stan
 ## Post-Generation Checklist
 
 - [ ] Frontmatter present and correctly formatted
+- [ ] Frontmatter uses the exact HTML-comment format (`<!-- Context: ... -->`), not YAML or any other style
 - [ ] Under the MVI size limit for this file type
 - [ ] Has a `📂 Codebase References` section (or explicitly notes why not applicable)
 - [ ] Function-based folder used (concepts/examples/guides/lookup/errors), not flat/topic-based
 - [ ] `navigation.md` in the same folder updated
 - [ ] No duplication with existing context — confirmed via context-indexer in step 1
+- [ ] For a fresh scaffold, every file in the chosen mode's template set exists in the target folder — no missing baseline files, dev and config treated equally
 
 ## What NOT to Do
 
@@ -51,3 +53,4 @@ You generate context files that follow the MVI (Minimal Viable Information) stan
 - ❌ Don't exceed size limits — split into multiple files instead.
 - ❌ Don't skip frontmatter, codebase references, or navigation.md updates.
 - ❌ Don't co-mingle software-dev and labbit-configuration content in the same file — they're separate domains with separate templates.
+- ❌ Don't invent folders or files outside the mode's template set; don't substitute YAML frontmatter.

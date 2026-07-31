@@ -40,7 +40,7 @@ When no context exists (step 4) and the user approves creation:
 
 1. Detect the active harness from environment clues (presence of `.claude/`, `.opencode/`, `.codex/`, or ask the user).
 2. Create `{context_root}` = `<detected-tool-dir>/context/` if a tool dir exists, else plain `context/` at the project root.
-3. Scaffold `navigation.md`, `index.md`, and either `project-intelligence/` (software-development domain) or `customer-intelligence/` (labbit-configuration domain) — see the `add-context` prompt. These are sibling folders directly under `{context_root}`, not nested under a domain-name folder — the domain name only exists inside this skill's own `references/domains/` tree, never in the consumer's project.
+3. Scaffold `navigation.md` and either `project-intelligence/` (software-development domain) or `customer-intelligence/` (labbit-configuration domain) — see the `add-context` prompt. These are sibling folders directly under `{context_root}`, not nested under a domain-name folder — the domain name only exists inside this skill's own `references/domains/` tree, never in the consumer's project.
 4. Record the choice in `.oac.json` (`{"contextRoot": "<path>"}`) so future sessions skip re-detection.
 
 ---

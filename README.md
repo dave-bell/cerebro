@@ -1,4 +1,4 @@
-# context-agents
+# cerebro
 
 Universal context management agents, skills, and prompts for AI coding assistants — extracted and generalized from [OpenAgentsControl](https://github.com/darrenhinde/OpenAgentsControl)'s context system, without its top-level orchestration layer.
 
@@ -43,7 +43,7 @@ Every agent and reference file resolves its context root dynamically (see `conte
 ## Install
 
 ```bash
-apm install <owner>/context-agents
+apm install dave-bell/cerebro
 ```
 
 This deploys agents, skills, and prompts to every detected/configured harness (see `apm.yml` `targets:`). To target specific harnesses only:

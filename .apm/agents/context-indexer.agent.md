@@ -1,7 +1,6 @@
 ---
 name: context-indexer
 description: Discovers and recommends context files (standards, workflows, project-intelligence, labbit-configuration) ranked by priority before implementation begins. Use before writing code or configuring Labbit for a customer, to find the right standards to follow first. Suggests external-lookup when a framework or library has no internal coverage.
-model: haiku
 tools:
   Read: true
   Grep: true

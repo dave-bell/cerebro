@@ -8,6 +8,12 @@ and this package adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Consumers declare this package as a bare dependency (`dave-bell/cerebro`), which
 resolves to the tip of `main`. To take a new release, run `apm update`.
 
+## [0.2.1] - 2026-08-07
+
+### Fixed
+
+- **`context-indexer` model selection.** The agent previously called out a model that wasn't valid.
+
 ## [0.2.0] - 2026-08-07
 
 ### Added

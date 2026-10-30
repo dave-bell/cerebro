@@ -65,7 +65,16 @@ apm compile -t opencode
 
 - **Codex** does not carry fine-grained `tools:` restrictions from agent frontmatter (APM limitation) — agents run with whatever tools the Codex harness grants by default.
 - **Codex and OpenCode** have no slash-command/hooks primitive for some flows — the `/add-context` and `/context` prompts still work as commands on Claude, Cursor, opencode, and Gemini; Codex users can ask the agent to run the same workflow conversationally.
-- Fine-grained path-scoped permissions (e.g. "only write files under `context/`") are enforced by instruction in each agent's prompt body, not by the tool-permission system — APM's cross-tool `tools:` field is coarse (whole-tool allow/deny), unlike OpenCode-native `permission` blocks.
+- **OpenCode** blocks nested subagents by default (`subagent_depth` defaults to 1), so `context-organizer` can't call `context-indexer` there. It falls back to doing its own discovery, which works but skips the indexer's ranked recommendations. To enable the delegation, add this to your `opencode.json`:
+
+  ```json
+  { "subagent_depth": 2 }
+  ```
+
+  Claude Code allows nested subagents by default.
+- **Claude Code** enforces read-only for `context-indexer` and `context-retriever` only by instruction. On macOS and Linux, Claude Code gives a subagent its Glob and Grep tools only through a `tools:` list, and OpenCode rejects that list. So these agents keep Bash and search with `find`/`grep`, and their instructions forbid any non-read-only use. OpenCode enforces read-only through `permission`.
+- **Claude Code** treats `.claude/` as sensitive, so writes under `.claude/context/` need interactive approval, even in `acceptEdits` mode. Headless runs, such as CI or a coding agent, can't write context there. For automated runs, use a top-level `context/` root, or set `contextRoot` in `.oac.json`.
+- Tool restrictions are expressed in each harness's native key, because APM deploys agent frontmatter verbatim and no single `tools:` value works in both harnesses: `disallowedTools` for Claude Code, `permission` for OpenCode. Claude Code ignores `permission`. OpenCode passes unknown keys such as `disallowedTools` through to the model provider as request options; this was tested as harmless on Amazon Bedrock. Fine-grained limits are enforced by instruction in each agent's prompt body, not by the tool-permission system. Examples are "only write files under `context/`" and "Bash only for `find`/`ls`/`mkdir -p`/`mv`".
 
 ## Provenance
 

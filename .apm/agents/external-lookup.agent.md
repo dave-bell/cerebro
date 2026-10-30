@@ -1,13 +1,10 @@
 ---
 name: external-lookup
 description: Fetches live, version-specific documentation for external libraries and frameworks (via Context7 or official docs) and persists it to .tmp/external-context/ for reuse. Use when a task involves an external library/framework not covered by internal context, or when context-indexer recommends invoking external-lookup.
-tools:
-  Read: true
-  Write: true
-  Bash: true
-  WebFetch: true
-  Grep: true
-  Glob: true
+mode: subagent
+disallowedTools: Agent
+permission:
+  task: deny
 ---
 
 # external-lookup

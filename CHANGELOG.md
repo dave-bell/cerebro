@@ -8,6 +8,40 @@ and this package adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Consumers declare this package as a bare dependency (`dave-bell/cerebro`), which
 resolves to the tip of `main`. To take a new release, run `apm update`.
 
+## [0.3.1] - 2026-10-29
+
+### Fixed
+
+- **Agents work under Claude Code.** The `tools:` map (OpenCode's format) was deployed
+  verbatim to `.claude/agents/`, where Claude Code expects a comma-separated string or a
+  YAML list. Subagents launched without usable tools and wrote tool calls out as text.
+  `tools` is removed from all five agents. Restrictions are now expressed with Claude
+  Code's `disallowedTools` and OpenCode's `permission`.
+
+### Changed
+
+- **Tool restrictions are now enforced in OpenCode.** The old `tools:` map used capitalised
+  names (`Read`, `Bash`, …) that never matched OpenCode's lowercase tools, so agents were
+  unrestricted.
+  - `context-indexer` and `context-retriever` are read-only (read, grep, glob and list only).
+  - `context-organizer` has no shell or web access, and can call only `context-indexer`.
+  - `context-manager` has no web access, and can call only `context-indexer`.
+  - `external-lookup` can't call other agents.
+  - All agents are now `mode: subagent`.
+- **Read-only is advisory in Claude Code.** On macOS and Linux, Claude Code provides
+  Glob and Grep to a subagent only through a `tools` list, which OpenCode rejects. So the
+  read-only agents keep Bash for `find`/`grep`, and their instructions forbid any
+  non-read-only use. Agent instructions no longer name harness-specific tools.
+
+### Notes
+
+- **OpenCode delegation.** OpenCode's default `subagent_depth` is 1, so
+  `context-organizer` can't call `context-indexer` there. It falls back to its own
+  discovery. Set `"subagent_depth": 2` in `opencode.json` to enable the delegation.
+- **Headless Claude Code runs can't write under `.claude/`.** Claude Code treats
+  `.claude/` as sensitive, so writes to `.claude/context/` need interactive approval. For
+  automated runs, use a top-level `context/` root or set `contextRoot` in `.oac.json`.
+
 ## [0.3.0] - 2026-10-29
 
 ### Added

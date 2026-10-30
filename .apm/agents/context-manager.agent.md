@@ -1,14 +1,14 @@
 ---
 name: context-manager
 description: Context organization and lifecycle management specialist — discovers, catalogs, validates, and maintains the context directory structure with dependency tracking. Use for auditing context health, finding gaps, reorganizing context, or cleaning up stale/temporary context files.
-tools:
-  Read: true
-  Grep: true
-  Glob: true
-  Edit: true
-  Write: true
-  Bash: true
-  Agent: true
+mode: subagent
+disallowedTools: WebFetch, WebSearch
+permission:
+  webfetch: deny
+  websearch: deny
+  task:
+    "*": deny
+    context-indexer: allow
 ---
 
 # context-manager

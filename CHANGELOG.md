@@ -8,6 +8,12 @@ and this package adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Consumers declare this package as a bare dependency (`dave-bell/cerebro`), which
 resolves to the tip of `main`. To take a new release, run `apm update`.
 
+## [0.3.0] - 2026-10-29
+
+### Added
+
+- **`durable-record` skill** A new skill to manage the context within a code change.
+
 ## [0.2.1] - 2026-08-07
 
 ### Fixed

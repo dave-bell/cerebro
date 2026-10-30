@@ -8,6 +8,20 @@ and this package adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Consumers declare this package as a bare dependency (`dave-bell/cerebro`), which
 resolves to the tip of `main`. To take a new release, run `apm update`.
 
+## [0.3.2] - 2026-10-29
+
+### Changed
+
+- **`durable-record` skill: when a decision needs an ADR.**
+  - Policy choices now count as ADR-worthy: what a gate checks, ignores or tolerates; a
+    security or compatibility trade-off; a convention adopted.
+  - In projects whose `decisions-log.md` is an index of ADRs, every row must link an ADR.
+    A choice too small for an ADR is too small for the log; mention it in the hand-back
+    instead.
+  - Read the log's header and Quick Reference first; they override the skill's defaults.
+    Logs that say "one row per decision, no prose sections" get only the row, with
+    everything else in the ADR.
+
 ## [0.3.1] - 2026-10-29
 
 ### Fixed

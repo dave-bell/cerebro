@@ -1,5 +1,5 @@
 name: cerebro
-version: 0.3.1
+version: 0.3.2
 description: Universal context management agents, skills, and commands for AI coding assistants — discover project standards, generate MVI-compliant context, fetch live library docs, and manage context lifecycle across software development and enterprise solution configuration.
 author: Dave Bell
 # Which agent platforms to deploy to.

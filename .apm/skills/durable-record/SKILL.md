@@ -38,8 +38,8 @@ Not every change earns every artifact. Decide deliberately, and **say which you 
 
 | Artifact | Write it when | Skip it when |
 |---|---|---|
-| **ADR** (only if the project keeps ADRs, see Step 2) | The change settled an architectural choice, or reversed one | Pure mechanics with no choice in it: a rename, a dependency bump, a typo |
-| `{context_root}/project-intelligence/decisions-log.md` | A decision was made (with or without an ADR) | No decision: nothing was chosen between alternatives |
+| **ADR** (only if the project keeps ADRs, see Step 2) | The change settled an architectural choice, or reversed one. **Policy choices count**: what a gate checks, ignores or tolerates; a security or compatibility trade-off; a convention adopted | Pure mechanics with no choice in it: a rename, a dependency bump, a typo |
+| `{context_root}/project-intelligence/decisions-log.md` | A decision was made. **If this project's log is an index of ADRs (its header says so), a row needs an ADR: write the ADR, or don't add the row** | No decision: nothing was chosen between alternatives |
 | `{context_root}/project-intelligence/business-tech-bridge.md` | Requirement or feature traceability changed: new requirements covered, a mapping now points at real code or tests, a trade-off was made | The change touches no business ↔ tech mapping |
 | `{context_root}/project-intelligence/living-notes.md` | The work opened, closed or narrowed an open question, added or paid down technical debt, revealed a gotcha, or started or finished an active project | Nothing on that file's lists moved |
 | `{context_root}/customer-intelligence/customization-log.md` | The change is customer configuration work and the project keeps customer-intelligence | Not customer configuration work |
@@ -62,9 +62,10 @@ When the project does keep ADRs:
 
 ## Step 3: `decisions-log.md`
 
-Follow the structure **this project's copy** documents. Read the file first:
+Follow the structure **this project's copy** documents. **Read its header and Quick Reference first. They override this step.**
 
-- **With ADRs:** the log is the index and summary. If the file has an index table, add a row. Add an entry following the file's documented template, but **summarise in two to four sentences and link the ADR**. Rationale, alternatives and consequences live in the ADR, in exactly one place.
+- **With ADRs:** the log is the index and summary. If the file has an index table, add a row. Add an entry following the file's documented template, but **summarise in two to four sentences and link the ADR**. Rationale, alternatives and consequences live in the ADR, in exactly one place. **Every row links an ADR.** If you decided a choice was too small for an ADR, it's too small for the log as well: mention it in the hand-back instead.
+- **Index-only logs:** some projects' logs say "one row per decision, no prose sections". Then add only the row, and put everything else in the ADR.
 - **Without ADRs:** the log entry is the record. Use the file's **Decision Template** in full: Date, Status, Owner, Context, Decision, Rationale, Alternatives Considered, Impact, Related.
 
 Either way, link the related issue, task or pull request, and the code (see the `context-manager` skill: `references/engine/standards/codebase-references.md`).
